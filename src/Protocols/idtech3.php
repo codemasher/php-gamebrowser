@@ -110,7 +110,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 		$response = $this->query($ip, $port, 'getstatus');
 		$response = explode("\n", $response); // explode on the newline (LF) character
 
-		if(count($response) < 3){
+		if(count($response) < 2){
 			throw new ServerQueryException('invalid status response');
 		}
 
