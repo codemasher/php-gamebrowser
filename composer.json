@@ -1,0 +1,41 @@
+{
+	"name": "codemasher/php-gamebrowser",
+	"description": "",
+	"homepage": "https://github.com/codemasher/php-gamebrowser",
+	"license": "MIT",
+	"type": "library",
+	"minimum-stability": "stable",
+	"keywords": [
+		"quake3", "ioquake3", "master", "query"
+	],
+	"authors": [
+		{
+			"name": "smiley",
+			"email": "smiley@chillerlan.net",
+			"homepage": "https://github.com/codemasher"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/codemasher/php-gamebrowser/issues",
+		"source": "https://github.com/codemasher/php-gamebrowser"
+	},
+	"require": {
+		"php": "^7.1"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^7.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"chillerlan\\GameBrowser\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"chillerlan\\GameBrowserCLI\\": "cli/",
+			"chillerlan\\GameBrowserTest\\": "tests/",
+			"chillerlan\\GameBrowserPublic\\": "public/",
+			"chillerlan\\GameBrowserExamples\\": "examples/"
+		}
+	}
+}
