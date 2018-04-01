@@ -67,6 +67,9 @@ abstract class idtech3 extends ServerQueryAbstract{
 
 		fclose($fp);
 
+		$response = str_replace([$this->queryheader, "infoResponse\n\\", "statusResponse\n\\"], '', $response);
+
+		print_r($response);
 		return $response;
 	}
 
@@ -106,9 +109,9 @@ abstract class idtech3 extends ServerQueryAbstract{
 	 */
 	public function getStatus(string $ip, int $port):array {
 		$response = $this->query($ip, $port, 'getstatus');
-		$response = explode(chr(10), $response); // explode on the newline (LF) character
+		$response = explode("\n", $response); // explode on the newline (LF) character
 
-		if(count($response) < 4){
+		if(count($response) < 3){
 			throw new ServerQueryException('invalid status response');
 		}
 
@@ -122,7 +125,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 	 * @throws \chillerlan\GameBrowser\ServerQueryException
 	 */
 	protected function parseMasterResponse(string $response):array {
-		$data = explode(chr(92), $response); // explode the response on the backslash
+		$data = explode("\\", $response); // explode the response on the backslash
 
 		if(count($data) < 2){
 			throw new ServerQueryException('invalid master response');
@@ -156,9 +159,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 	 * @throws \chillerlan\GameBrowser\ServerQueryException
 	 */
 	protected function parseCvars(string $response):array {
-		$response = explode(chr(92), $response);
-
-		array_shift($response); // shift the response header off the top
+		$response = explode('\\', $response);
 
 		if(count($response) < 2){
 			throw new ServerQueryException('invalid cvar list');
@@ -175,8 +176,6 @@ abstract class idtech3 extends ServerQueryAbstract{
 	 * @return array
 	 */
 	protected function parseStatus(array $response):array {
-		array_shift($response); // shift the response header off the top
-
 		$cvars = $this->parseCvars(array_shift($response)); // the next element is the cvar list
 
 		array_pop($response); // remove leftover whitespace from the end, the remaining part is the playerlist
