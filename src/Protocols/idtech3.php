@@ -69,7 +69,6 @@ abstract class idtech3 extends ServerQueryAbstract{
 
 		$response = str_replace([$this->queryheader, "infoResponse\n\\", "statusResponse\n\\"], '', $response);
 
-		print_r($response);
 		return $response;
 	}
 
