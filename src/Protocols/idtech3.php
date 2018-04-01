@@ -158,11 +158,11 @@ abstract class idtech3 extends ServerQueryAbstract{
 	protected function parseCvars(string $response):array {
 		$response = explode(chr(92), $response);
 
+		array_shift($response); // shift the response header off the top
+
 		if(count($response) < 2){
 			throw new ServerQueryException('invalid cvar list');
 		}
-
-		array_shift($response); // shift the response header off the top
 
 		$response = array_chunk($response, 2); // chunk the rest into key/value pairs
 
