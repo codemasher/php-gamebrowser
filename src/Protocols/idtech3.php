@@ -124,7 +124,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 	 * @throws \chillerlan\GameBrowser\ServerQueryException
 	 */
 	protected function parseMasterResponse(string $response):array {
-		$data = explode("\\", $response); // explode the response on the backslash
+		$data = explode('\\', $response); // explode the response on the backslash
 
 		if(count($data) < 2){
 			throw new ServerQueryException('invalid master response');
