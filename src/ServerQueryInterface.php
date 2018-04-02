@@ -37,4 +37,8 @@ interface ServerQueryInterface{
 	 */
 	public function getStatus(string $ip, int $port):array;
 
+	/**
+	 * @return string
+	 */
+	public function getGameName():string;
 }

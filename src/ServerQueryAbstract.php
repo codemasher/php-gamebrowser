@@ -12,8 +12,17 @@
 
 namespace chillerlan\GameBrowser;
 
+use ReflectionClass;
+
 /**
  */
 abstract class ServerQueryAbstract implements ServerQueryInterface{
+
+	/**
+	 * @return string
+	 */
+	public function getGameName():string{
+		return (new ReflectionClass($this))->getShortName();
+	}
 
 }
