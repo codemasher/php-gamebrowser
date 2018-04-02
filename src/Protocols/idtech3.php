@@ -12,11 +12,12 @@
 
 namespace chillerlan\GameBrowser\Protocols;
 
-use chillerlan\GameBrowser\ServerQueryAbstract;
-use chillerlan\GameBrowser\ServerQueryException;
+use chillerlan\GameBrowser\{
+	ServerQueryAbstract, ServerQueryException
+};
 
 /**
- * http://caia.swin.edu.au/reports/070730A/CAIA-TR-070730A.pdf
+ * @link http://caia.swin.edu.au/reports/070730A/CAIA-TR-070730A.pdf
  */
 abstract class idtech3 extends ServerQueryAbstract{
 
