@@ -143,8 +143,8 @@ abstract class idtech3 extends ServerQueryAbstract{
 			$port = array_pop($str); // the last element contains the port
 
 			$response[] = [
-				'ip'   => implode('.', $str), // the remaining 4 elements represent the ip
-				'port' => $port,
+				implode('.', $str), // the remaining 4 elements represent the ip
+				$port,
 			];
 
 		}
