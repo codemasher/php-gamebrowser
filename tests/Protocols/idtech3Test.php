@@ -27,11 +27,13 @@ class idtech3Test extends QueryTestAbstract{
 
 		$this->assertCount(14, $list);
 
-		$this->assertSame('95.174.129.9', $list[0]['ip']);
-		$this->assertSame(27960, $list[0]['port']);
+		[$ip, $port] = $list[0];
+		$this->assertSame('95.174.129.9', $ip);
+		$this->assertSame(27960, $port);
 
-		$this->assertSame('109.111.177.137', $list[13]['ip']);
-		$this->assertSame(27960, $list[13]['port']);
+		[$ip, $port] = $list[13];
+		$this->assertSame('109.111.177.137', $ip);
+		$this->assertSame(27960, $port);
 	}
 
 	public function testParseCvars(){
