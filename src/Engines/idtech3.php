@@ -48,9 +48,9 @@ abstract class idtech3 extends ServerQueryAbstract{
 	public function __construct(SettingsContainerInterface $options = null){
 		parent::__construct($options);
 
-		$this->masterHost  = $this->options->masterHost ?? 'master.quake3arena.com';
-		$this->masterPort  = $this->options->masterPort ?? 27950;
-		$this->masterQuery = $this->options->masterQuery ?? "\xff\xff\xff\xffgetservers %s full empty";
+		$this->masterHost  = $this->options->masterHost ?? $this->masterHost ?? 'master.quake3arena.com';
+		$this->masterPort  = $this->options->masterPort ?? $this->masterPort ?? 27950;
+		$this->masterQuery = $this->options->masterQuery ?? $this->masterQuery ?? "\xff\xff\xff\xffgetservers %s full empty";
 	}
 
 
