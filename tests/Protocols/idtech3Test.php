@@ -13,7 +13,7 @@
 namespace chillerlan\GameBrowserTest\Protocols;
 
 use chillerlan\GameBrowser\Games\Q3A;
-use chillerlan\GameBrowser\Protocols\idtech3;
+use chillerlan\GameBrowser\Engines\idtech3;
 use chillerlan\GameBrowserTest\QueryTestAbstract;
 
 class idtech3Test extends QueryTestAbstract{
