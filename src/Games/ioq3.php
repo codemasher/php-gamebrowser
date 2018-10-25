@@ -12,15 +12,14 @@
 
 namespace chillerlan\GameBrowser\Games;
 
-use chillerlan\GameBrowser\Protocols\idtech3;
+use chillerlan\GameBrowser\Engines\idtech3;
 
 class ioq3 extends idtech3{
 
 	protected $masterHost = 'master.ioquake3.org';
-	protected $masterPort = 27950;
 	protected $protocols  = [
-		'1.36' => '68',
-		// ... @todo
+		'1.36-68' => '68',
+		'1.36-71' => '71',
 	];
 
 }

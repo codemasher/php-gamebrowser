@@ -12,17 +12,17 @@
 
 namespace chillerlan\GameBrowser\Games;
 
-use chillerlan\GameBrowser\Protocols\idtech3;
+use chillerlan\GameBrowser\Engines\idtech3;
 
 class Q3A extends idtech3{
 
-	protected $masterHost = 'master.quake3arena.com';
-	protected $masterPort = 27950;
-	protected $protocols  = [
-		'1.32' => '68',
-		'1.31' => '67',
+	protected $protocols = [
+		'1.16' => '43',
+		'1.17' => '45',
+		'1.2x' => '48',
 		'1.30' => '66',
-		// ... @todo
+		'1.31' => '67',
+		'1.32' => '68',
 	];
 
 }

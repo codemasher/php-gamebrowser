@@ -7,40 +7,50 @@
  * @license      MIT
  */
 
-use chillerlan\Database\{
-	Database, DatabaseOptions, Drivers\MySQLiDrv
-};
-use chillerlan\GameBrowser\Games\{
-	Q3A, ioq3, WoP
-};
-use chillerlan\Traits\DotEnv;
+use chillerlan\Database\{Database, DatabaseOptionsTrait, Drivers\MySQLiDrv};
+use chillerlan\DotEnv\DotEnv;
+use chillerlan\GameBrowser\Games\{ioq3, Q3A, Tremulous, WolfET, WoP};
+use chillerlan\GameBrowser\ServerQueryOptionsTrait;
+use chillerlan\Logger\{Log, LogOptionsTrait, Output\ConsoleLog};
+use chillerlan\Settings\SettingsContainerAbstract;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
 $env = (new DotEnv(__DIR__.'/../config', '.env', false))->load();
 
-$options = [
+$o = [
 	// DatabaseOptions
 	'driver'           => MySQLiDrv::class,
-	'host'             => $env->MYSQL_HOST,
-	'port'             => $env->MYSQL_PORT,
-	'database'         => $env->MYSQL_DATABASE,
-	'username'         => $env->MYSQL_USERNAME,
-	'password'         => $env->MYSQL_PASSWORD,
+	'host'             => $env->DB_HOST,
+	'port'             => $env->DB_PORT,
+	'database'         => $env->DB_DATABASE,
+	'username'         => $env->DB_USERNAME,
+	'password'         => $env->DB_PASSWORD,
+	// log
+	'minLogLevel'      => 'debug',
 ];
 
-$db = new Database(new DatabaseOptions($options));
+$options = new class($o) extends SettingsContainerAbstract{
+	use DatabaseOptionsTrait, LogOptionsTrait, ServerQueryOptionsTrait;
+};
+
+$logger = (new Log)->addInstance(new ConsoleLog($options), 'console');
+
+$db = new Database($options);
+$db->connect();
 
 $games = [
-	Q3A::class,
 	ioq3::class,
+	Q3A::class,
+	Tremulous::class,
+	WolfET::class,
 	WoP::class,
 ];
 
 foreach($games as $game){
 
-	/** @var \chillerlan\GameBrowser\ServerQueryInterface $queryInterface */
-	$queryInterface = new $game;
+	/** @var \chillerlan\GameBrowser\Engines\ServerQueryInterface $queryInterface */
+	$queryInterface = new $game($options);
 
 	$gamename   = $queryInterface->getGameName();
 	$serverlist = $queryInterface->getServers();
@@ -49,9 +59,26 @@ foreach($games as $game){
 		foreach($servers as $server){
 			[$ip, $port] = $server;
 
-			var_dump([$gamename, $version, $ip, $port]);
+			try{
+				$info = $queryInterface->getInfo($ip, $port);
 
-			// @todo... WIP
+				$values = [
+					'id'       => md5($ip.':'.$port),
+					'ip'       => $ip,
+					'port'     => $port,
+					'game'     => $gamename,
+					'version'  => $version,
+					'response' => 1,
+					'data'     => json_encode($info),
+				];
+
+				$db->insert->into('servers', 'ignore')->values($values)->query();
+				$logger->info($ip.':'.$port.' - '.$info['hostname']);
+			}
+			catch(\Exception $e){
+				// we pretend to catch errors here...
+				$logger->debug($ip.':'.$port);
+			}
 		}
 	}
 

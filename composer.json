@@ -6,7 +6,7 @@
 	"type": "library",
 	"minimum-stability": "stable",
 	"keywords": [
-		"quake3", "ioquake3", "master", "query"
+		"quake3", "ioquake3", "gameserver", "query"
 	],
 	"authors": [
 		{
@@ -21,10 +21,14 @@
 	},
 	"require": {
 		"php": "^7.2",
-		"chillerlan/php-database": "^2.0"
+		"ext-json": "*",
+		"chillerlan/php-settings-container": "^1.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^7.0"
+		"phpunit/phpunit": "^7.4",
+		"chillerlan/php-database": "^3.0",
+		"chillerlan/php-dotenv": "^1.0",
+		"chillerlan/php-log": "^3.0"
 	},
 	"autoload": {
 		"files": [

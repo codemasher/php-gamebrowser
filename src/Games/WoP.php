@@ -12,48 +12,74 @@
 
 namespace chillerlan\GameBrowser\Games;
 
-use chillerlan\GameBrowser\Protocols\idtech3;
+use chillerlan\GameBrowser\Engines\idtech3;
 
 class WoP extends idtech3{
 
 	protected $masterHost = 'master.worldofpadman.com';
 	protected $masterPort = 27955;
 	protected $protocols  = [
-		'1.2' => '68', // there's no reliable way to tell 1.1 and 1.2 apart... ty for not listening to me. ~smiley
+		// there's no reliable way to tell 1.1 and 1.2 apart... ty for not listening to me. ~smiley
+		// the "version" cvar seems to be the best bet, but it differs between OS
+		'1.2' => '68',
+		// 1.5 and 1.5.1
 		'1.5' => '69',
-		'1.6' => 'WorldofPadman 71', // 1.5.2+ actually - what a mess...
+		// 1.5.2+ actually - what a mess...
+		'1.6' => 'WorldofPadman 71',
 	];
 
 	/**
 	 * @inheritdoc
+	 *
+	 * teams:
+	 *   0 -> free
+	 *   1 -> red
+	 *   2 -> blue
+	 *   3 -> spectator
 	 */
-	protected function parsePlayers(array $playerlist, array $cvars):array {
-		$protocol = (int)($cvars['protocol'] ?? $cvars['com_protocol']);
+	protected function parsePlayers(array $playerlist, array $cvars = null):array {
+		$protocol = (int)($cvars['protocol'] ?? $cvars['com_protocol'] ?? 0);
 
-		// wop 1.5.2+
-		// teams: 0=free, 1=red, 2=blue 3=spectator
+		// wop 1.5 and 1.5.1, 5-element player string: [score, ping, team, is_bot, name]
+		// wop 1.5.2+, default q3a player string [score, ping, name], team/is_bot via cvar
+		$explodeLimit = $protocol === 69 ? 5 : 3;
+
 		if($protocol === 71){
-			$teams = explode(' ', $cvars['Players_Team']);
-			$bots  = explode(' ', $cvars['Players_Bot']);
+			foreach(['Players_Team', 'Players_Bot'] as $k){
+				$cvars[$k] = explode(' ', trim($cvars[$k]));
+			}
 		}
-		// ... @todo
 
 		$players = [];
 
-		foreach($playerlist as $i => $player){
-			$player    = explode(' ', $player);
-			$player[2] = trim($player[2], '"'); // strip double quotes from the name
+		foreach($playerlist as $i => $p){
+			$p = explode(' ', $p, $explodeLimit);
+
+			$player = [
+				'name'   => $p[2],
+				'score'  => (int)$p[0],
+				'ping'   => (int)$p[1],
+				'team'   => null,
+				'is_bot' => null
+			];
 
 			// assign team and bot indicators
-			$player[3] = null;
-			$player[4] = null;
-
-			if($protocol === 71){
-				$player[3] = (int)$teams[$i];
-				$player[4] = (bool)$bots[$i];
+			// wop 1.5 and 1.5.1
+			if($protocol === 69){
+				$player['team']   = (int)$p[2];
+				$player['is_bot'] = (bool)$p[3];
+				$player['name']   = $p[4];
+			}
+			// wop 1.5.2+
+			elseif($protocol === 71){
+				$player['team']   = (int)$cvars['Players_Team'][$i];
+				$player['is_bot'] = (bool)$cvars['Players_Bot'][$i];
 			}
 
-			$players[$i] = array_combine(['score', 'ping', 'name', 'team', 'is_bot'], $player);
+			// strip double quotes (delimiters) from the name
+			$player['name'] = trim($player['name'], '"');
+
+			$players[$i] = $player;
 		}
 
 		return $players;
