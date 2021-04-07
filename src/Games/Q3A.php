@@ -16,7 +16,7 @@ use chillerlan\GameBrowser\Engines\idtech3;
 
 class Q3A extends idtech3{
 
-	protected $protocols = [
+	protected array $protocols = [
 		'1.16' => '43',
 		'1.17' => '45',
 		'1.2x' => '48',

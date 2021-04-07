@@ -16,32 +16,24 @@ trait ServerQueryOptionsTrait{
 
 	/**
 	 * the socket timeout
-	 *
-	 * @var int
 	 */
-	protected $socketTimeout;
+	protected int $socketTimeout = 1;
 
 	/**
 	 * the master server IP or hostname
-	 *
-	 * @var string
 	 */
-	protected $masterHost;
+	protected ?string $masterHost = null;
 
 	/**
 	 * the master server port
-	 *
-	 * @var int
 	 */
-	protected $masterPort;
+	protected ?int $masterPort = null;
 
 	/**
 	 * the master query string.
 	 *
 	 * - idtech3: a %s represents the protocol string, e.g. "getservers %s full empty"
-	 *
-	 * @var string
 	 */
-	protected $masterQuery;
+	protected ?string $masterQuery = null;
 
 }

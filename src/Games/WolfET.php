@@ -16,10 +16,10 @@ use chillerlan\GameBrowser\Engines\idtech3;
 
 class WolfET extends idtech3{
 
-	protected $masterHost = 'etmaster.idsoftware.com';
-#	protected $masterHost = 'master.quake3arena.com'; // several W:ET servers report there
+	protected string $masterHost = 'etmaster.idsoftware.com';
+#	protected string $masterHost = 'master.quake3arena.com'; // several W:ET servers report there
 
-	protected $protocols = [
+	protected array $protocols = [
 		'1.1'   => '50',
 		'1.3'   => '57',
 		'1.41'  => '60',

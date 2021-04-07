@@ -19,20 +19,13 @@ use ReflectionClass, ReflectionMethod, ReflectionProperty;
  */
 abstract class QueryTestAbstract extends TestCase{
 
-	/**
-	 * @var \ReflectionClass
-	 */
-	protected $reflection;
-
-	/**
-	 * @var string
-	 */
-	protected $FQCN;
+	protected ReflectionClass $reflection;
+	protected string $FQCN;
 
 	/**
 	 *
 	 */
-	protected function setUp(){
+	protected function setUp():void{
 		$this->reflection = new ReflectionClass($this->FQCN);
 	}
 
@@ -41,7 +34,7 @@ abstract class QueryTestAbstract extends TestCase{
 	 *
 	 * @return \ReflectionMethod
 	 */
-	protected function getMethod(string $method):ReflectionMethod {
+	protected function getMethod(string $method):ReflectionMethod{
 		$method = $this->reflection->getMethod($method);
 		$method->setAccessible(true);
 
@@ -53,7 +46,7 @@ abstract class QueryTestAbstract extends TestCase{
 	 *
 	 * @return \ReflectionProperty
 	 */
-	protected function getProperty(string $property):ReflectionProperty {
+	protected function getProperty(string $property):ReflectionProperty{
 		$property = $this->reflection->getProperty($property);
 		$property->setAccessible(true);
 
@@ -61,13 +54,13 @@ abstract class QueryTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @param        $object
+	 * @param object $object
 	 * @param string $property
-	 * @param        $value
+	 * @param mixed  $value
 	 *
 	 * @return void
 	 */
-	protected function setProperty($object, string $property, $value):void {
+	protected function setProperty(object $object, string $property, $value):void{
 		$property = $this->getProperty($property);
 		$property->setAccessible(true);
 		$property->setValue($object, $value);

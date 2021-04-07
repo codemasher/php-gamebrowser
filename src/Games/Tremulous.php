@@ -19,9 +19,9 @@ use chillerlan\GameBrowser\Engines\idtech3;
  */
 class Tremulous extends idtech3{
 
-	protected $masterHost = 'master.tremulous.net';
-	protected $masterPort = 30710;
-	protected $protocols = [
+	protected string $masterHost = 'master.tremulous.net';
+	protected int    $masterPort = 30710;
+	protected array  $protocols  = [
 		'1.1' => '69',
 		'1.2' => '70',
 	];

@@ -20,25 +20,10 @@ use chillerlan\Settings\SettingsContainerInterface;
  */
 abstract class idtech3 extends ServerQueryAbstract{
 
-	/**
-	 * @var string
-	 */
-	protected $masterQuery;
-
-	/**
-	 * @var string
-	 */
-	protected $masterHost;
-
-	/**
-	 * @var int
-	 */
-	protected $masterPort;
-
-	/**
-	 * @var array
-	 */
-	protected $protocols;
+	protected string $masterQuery;
+	protected string $masterHost;
+	protected int    $masterPort;
+	protected array  $protocols;
 
 	/**
 	 * idtech3 constructor.
@@ -151,14 +136,14 @@ abstract class idtech3 extends ServerQueryAbstract{
 
 		foreach($data as $str){
 
-			// "EOT   "
-			if($str === "\x45\x4f\x54\x00\x00\x00"){
-				break;
-			}
-
 			// either "ÿÿÿÿgetserversResponse" or garbage data
 			if(strlen($str) !== 6){
 				continue;
+			}
+
+			// "EOT   "
+			if($str === "\x45\x4f\x54\x00\x00\x00"){
+				break;
 			}
 
 			// unpack the string into a 5-element array

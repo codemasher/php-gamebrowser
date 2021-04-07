@@ -16,8 +16,8 @@ use chillerlan\GameBrowser\Engines\idtech3;
 
 class ioq3 extends idtech3{
 
-	protected $masterHost = 'master.ioquake3.org';
-	protected $protocols  = [
+	protected string $masterHost = 'master.ioquake3.org';
+	protected array  $protocols  = [
 		'1.36-68' => '68',
 		'1.36-71' => '71',
 	];

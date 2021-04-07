@@ -21,12 +21,12 @@ abstract class ServerQueryAbstract implements ServerQueryInterface{
 	/**
 	 * @var \chillerlan\GameBrowser\ServerQueryOptions
 	 */
-	protected $options;
+	protected SettingsContainerInterface $options;
 
 	/**
 	 * @var int
 	 */
-	protected $timeout = 1;
+	protected int $timeout = 1;
 
 	/**
 	 * ServerQueryAbstract constructor.
@@ -36,7 +36,7 @@ abstract class ServerQueryAbstract implements ServerQueryInterface{
 	public function __construct(SettingsContainerInterface $options = null){
 		$this->options = $options ?? new ServerQueryOptions;
 
-		$timeout = (int)$this->options->socketTimeout;
+		$timeout = $this->options->socketTimeout;
 
 		if($timeout > 0){
 			$this->timeout = $timeout;

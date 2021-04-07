@@ -16,9 +16,9 @@ use chillerlan\GameBrowser\Engines\idtech3;
 
 class WoP extends idtech3{
 
-	protected $masterHost = 'master.worldofpadman.com';
-	protected $masterPort = 27955;
-	protected $protocols  = [
+	protected string $masterHost = 'master.worldofpadman.com';
+	protected int    $masterPort = 27955;
+	protected array  $protocols  = [
 		// there's no reliable way to tell 1.1 and 1.2 apart... ty for not listening to me. ~smiley
 		// the "version" cvar seems to be the best bet, but it differs between OS
 		'1.2' => '68',
@@ -26,6 +26,7 @@ class WoP extends idtech3{
 		'1.5' => '69',
 		// 1.5.2+ actually - what a mess...
 		'1.6' => 'WorldofPadman 71',
+		'1.7' => 'WorldofPadman 72',
 	];
 
 	/**
