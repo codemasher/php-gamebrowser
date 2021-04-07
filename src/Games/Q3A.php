@@ -16,6 +16,7 @@ use chillerlan\GameBrowser\Engines\idtech3;
 
 class Q3A extends idtech3{
 
+	protected string $masterHost = 'master.quake3arena.com';
 	protected array $protocols = [
 		'1.16' => '43',
 		'1.17' => '45',

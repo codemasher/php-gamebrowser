@@ -18,14 +18,7 @@ use ReflectionClass, RuntimeException;
 
 abstract class ServerQueryAbstract implements ServerQueryInterface{
 
-	/**
-	 * @var \chillerlan\GameBrowser\ServerQueryOptions
-	 */
 	protected SettingsContainerInterface $options;
-
-	/**
-	 * @var int
-	 */
 	protected int $timeout = 1;
 
 	/**
@@ -36,28 +29,20 @@ abstract class ServerQueryAbstract implements ServerQueryInterface{
 	public function __construct(SettingsContainerInterface $options = null){
 		$this->options = $options ?? new ServerQueryOptions;
 
-		$timeout = $this->options->socketTimeout;
-
-		if($timeout > 0){
-			$this->timeout = $timeout;
+		if($this->options->socketTimeout > 0){
+			$this->timeout = $this->options->socketTimeout;
 		}
 	}
 
 	/**
-	 * @return string
+	 * @inheritDoc
 	 */
 	public function getGameName():string{
 		return (new ReflectionClass($this))->getShortName();
 	}
 
 	/**
-	 * @param string $host
-	 * @param int    $port
-	 * @param string $query
-	 *
-	 * @return string
-	 * @throws \RuntimeException - if fsockopen() fails
-	 * @throws \chillerlan\GameBrowser\ServerQueryException
+	 * @inheritDoc
 	 */
 	public function query(string $host, int $port, string $query):string{
 

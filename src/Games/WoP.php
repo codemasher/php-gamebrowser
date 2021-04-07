@@ -45,7 +45,7 @@ class WoP extends idtech3{
 		// wop 1.5.2+, default q3a player string [score, ping, name], team/is_bot via cvar
 		$explodeLimit = $protocol === 69 ? 5 : 3;
 
-		if($protocol === 71){
+		if($protocol >= 71){
 			foreach(['Players_Team', 'Players_Bot'] as $k){
 				$cvars[$k] = explode(' ', trim($cvars[$k]));
 			}
@@ -72,7 +72,7 @@ class WoP extends idtech3{
 				$player['name']   = $p[4];
 			}
 			// wop 1.5.2+
-			elseif($protocol === 71){
+			elseif($protocol >= 71){
 				$player['team']   = (int)$cvars['Players_Team'][$i];
 				$player['is_bot'] = (bool)$cvars['Players_Bot'][$i];
 			}

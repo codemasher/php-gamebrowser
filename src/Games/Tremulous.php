@@ -40,11 +40,6 @@ class Tremulous extends idtech3{
 	 * but it won't contain an empty spot if there is no player in that slot.
 	 * the playerlist also doesn't include players in private slots,
 	 * so you'll have to skip the first sv_privateclients characters of P.
-	 *
-	 * @param array $playerlist
-	 * @param array $cvars
-	 *
-	 * @return array
 	 */
 	protected function parsePlayers(array $playerlist, array $cvars = null):array{
 		$players = [];

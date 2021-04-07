@@ -14,15 +14,16 @@ namespace chillerlan\GameBrowser\Engines;
 
 use chillerlan\GameBrowser\{ServerQueryException};
 use chillerlan\Settings\SettingsContainerInterface;
+use function var_dump;
 
 /**
  * @link http://caia.swin.edu.au/reports/070730A/CAIA-TR-070730A.pdf
  */
 abstract class idtech3 extends ServerQueryAbstract{
 
-	protected string $masterQuery;
+	protected string $masterQuery = "\xff\xff\xff\xffgetservers %s full empty";
 	protected string $masterHost;
-	protected int    $masterPort;
+	protected int    $masterPort = 27950;
 	protected array  $protocols;
 
 	/**
@@ -33,17 +34,16 @@ abstract class idtech3 extends ServerQueryAbstract{
 	public function __construct(SettingsContainerInterface $options = null){
 		parent::__construct($options);
 
-		$this->masterHost  = $this->options->masterHost ?? $this->masterHost ?? 'master.quake3arena.com';
-		$this->masterPort  = $this->options->masterPort ?? $this->masterPort ?? 27950;
-		$this->masterQuery = $this->options->masterQuery ?? $this->masterQuery ?? "\xff\xff\xff\xffgetservers %s full empty";
+		foreach(['masterHost', 'masterPort', 'masterQuery'] as $prop){
+			if($this->options->{$prop} !== null){
+				$this->{$prop} = $this->options->{$prop};
+			}
+		}
+
 	}
 
-
 	/**
-	 * @param string|null $protocol
-	 *
-	 * @return array
-	 * @throws \chillerlan\GameBrowser\ServerQueryException
+	 * @inheritDoc
 	 */
 	public function getServers(string $protocol = null):array{
 
@@ -72,11 +72,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 	}
 
 	/**
-	 * @param string $ip
-	 * @param int    $port
-	 *
-	 * @return array
-	 * @throws \chillerlan\GameBrowser\ServerQueryException
+	 * @inheritDoc
 	 */
 	public function getInfo(string $ip, int $port):array{
 		$response = $this->query($ip, $port, "\xff\xff\xff\xffgetinfo");
@@ -92,11 +88,7 @@ abstract class idtech3 extends ServerQueryAbstract{
 	}
 
 	/**
-	 * @param string $ip
-	 * @param int    $port
-	 *
-	 * @return array
-	 * @throws \chillerlan\GameBrowser\ServerQueryException
+	 * @inheritDoc
 	 */
 	public function getStatus(string $ip, int $port):array{
 		$response = $this->query($ip, $port, "\xff\xff\xff\xffgetstatus");
@@ -178,20 +170,12 @@ abstract class idtech3 extends ServerQueryAbstract{
 		}
 
 		$chunk = array_chunk($response, 2); // chunk the response into key/value pairs
-		$data  = array_combine(array_column($chunk, 0), array_column($chunk, 1));
 
-		if($data === false){
-			return [];
-		}
-
-		return $data;
+		return array_combine(array_column($chunk, 0), array_column($chunk, 1)) ?: [];
 	}
 
 	/**
-	 * @param array $playerlist
-	 * @param array $cvars
 	 *
-	 * @return array
 	 */
 	protected function parsePlayers(array $playerlist, array $cvars = null):array{
 		$players = [];
